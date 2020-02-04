@@ -37,18 +37,41 @@ var backgroundImage = {
 
 let carImg = {
   img: carimg,
-  y: 0,
+  y: 240,
+  x: 150,
+  speed: 10,
 
-  move: function
+  draw: function() {
+    context.drawImage(this.img, this.x, this.y, 230, 130);
+  },
+
+  moveUp:    function() { this.y -= this.speed },
+  moveDown:  function() { this.y += this.speed },
 }
 
-function updateCanvas() {
-  backgroundImage.move();
+document.onkeydown = function(e) {
+  switch (e.keyCode) {
+    case 38: carImg.moveUp(); break;
+    case 40: carImg.moveDown(); break;
+  }
+  updateCanvas();
+}
 
+
+function updateCanvas() {
+  backgroundImage.draw();
+  carImg.draw();
+  requestAnimationFrame(updateCanvas);
+}
+
+backgroundUpdate();
+
+
+function backgroundUpdate () {
+  backgroundImage.move(); 
   context.clearRect(0, 0, canvas.width, canvas.height);
   backgroundImage.draw();
-
-  requestAnimationFrame(updateCanvas);
+  requestAnimationFrame(backgroundUpdate);
 }
 
 // start calling updateCanvas once the image is loaded
